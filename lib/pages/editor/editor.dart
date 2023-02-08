@@ -579,43 +579,50 @@ class _EditorState extends State<Editor> {
     final int? currentPageIndex = this.currentPageIndex;
     if (currentPageIndex == null) return;
 
-    PhotoInfo? photoInfo = await pickPhotoMobile();
-    if (photoInfo == null) return;
+    List<PhotoInfo> photoInfos = await pickPhotoMobile();
+    if (photoInfos.isEmpty) return;
 
-    EditorImage image = EditorImage(
-      id: coreInfo.nextImageId++,
-      extension: photoInfo.extension,
-      bytes: photoInfo.bytes,
-      pageIndex: currentPageIndex,
-      pageSize: coreInfo.pages[currentPageIndex].size,
-      onMoveImage: onMoveImage,
-      onDeleteImage: onDeleteImage,
-      onMiscChange: autosaveAfterDelay,
-      onLoad: () => setState(() {}),
-    );
+    List<EditorImage> images = [
+      for (final PhotoInfo photoInfo in photoInfos)
+        EditorImage(
+          id: coreInfo.nextImageId++,
+          extension: photoInfo.extension,
+          bytes: photoInfo.bytes,
+          pageIndex: currentPageIndex,
+          pageSize: coreInfo.pages[currentPageIndex].size,
+          onMoveImage: onMoveImage,
+          onDeleteImage: onDeleteImage,
+          onMiscChange: autosaveAfterDelay,
+          onLoad: () => setState(() {}),
+        ),
+    ];
+
     history.recordChange(EditorHistoryItem(
       type: EditorHistoryItemType.draw,
       strokes: [],
-      images: [image],
+      images: images,
     ));
-    coreInfo.pages[currentPageIndex].images.add(image);
+    coreInfo.pages[currentPageIndex].images.addAll(images);
     autosaveAfterDelay();
   }
 
-  Future<PhotoInfo?> pickPhotoMobile() async {
+  Future<List<PhotoInfo>> pickPhotoMobile() async {
     final ImagePicker picker = ImagePicker();
-    final XFile? image = await picker.pickImage(
-      source: ImageSource.gallery,
+
+    final List<XFile> images = await picker.pickMultiImage(
       maxWidth: 1000,
       maxHeight: 1000,
       imageQuality: 90,
       requestFullMetadata: false,
     );
-    if (image == null) return null;
-    return PhotoInfo(
-      bytes: await image.readAsBytes(),
-      extension: image.name.substring(image.name.lastIndexOf('.')),
-    );
+
+    return [
+      for (final XFile image in images)
+        PhotoInfo(
+          bytes: await image.readAsBytes(),
+          extension: image.name.substring(image.name.lastIndexOf('.')),
+        ),
+    ];
   }
 
   Future exportAsPdf() async {
