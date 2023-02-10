@@ -654,6 +654,9 @@ class _EditorState extends State<Editor> {
     final PlatformFile file = result.files.single;
     if (file.bytes == null) return false;
 
+    final emptyPage = coreInfo.pages.removeLast();
+    assert(emptyPage.isEmpty);
+
     await for (final pdfPage in Printing.raster(file.bytes!)) {
       final Uint8List imageBytes = await pdfPage.toPng();
       final editorPage = EditorPage(
@@ -675,6 +678,8 @@ class _EditorState extends State<Editor> {
       coreInfo.pages.add(editorPage);
       editorPage.backgroundImage = image;
     }
+
+    coreInfo.pages.add(emptyPage);
 
     // todo: add to history
 
