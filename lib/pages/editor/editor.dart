@@ -573,14 +573,16 @@ class _EditorState extends State<Editor> {
     }
   }
 
-  Future pickPhoto() async {
-    if (coreInfo.readOnly) return;
+  /// Prompts the user to pick photos from their device.
+  /// Returns the number of photos picked.
+  Future<int> pickPhotos() async {
+    if (coreInfo.readOnly) return 0;
 
     final int? currentPageIndex = this.currentPageIndex;
-    if (currentPageIndex == null) return;
+    if (currentPageIndex == null) return 0;
 
     List<PhotoInfo> photoInfos = await pickPhotoMobile();
-    if (photoInfos.isEmpty) return;
+    if (photoInfos.isEmpty) return 0;
 
     List<EditorImage> images = [
       for (final PhotoInfo photoInfo in photoInfos)
@@ -604,6 +606,8 @@ class _EditorState extends State<Editor> {
     ));
     coreInfo.pages[currentPageIndex].images.addAll(images);
     autosaveAfterDelay();
+
+    return images.length;
   }
 
   Future<List<PhotoInfo>> pickPhotoMobile() async {
@@ -778,7 +782,7 @@ class _EditorState extends State<Editor> {
                 });
               },
 
-              pickPhoto: pickPhoto,
+              pickPhoto: pickPhotos,
 
               exportAsSbn: exportAsSbn,
               exportAsPdf: exportAsPdf,
@@ -902,6 +906,8 @@ class _EditorState extends State<Editor> {
         if (coreInfo.readOnly) return;
         autosaveAfterDelay();
       }),
+
+      pickPhotos: pickPhotos,
     );
   }
 
