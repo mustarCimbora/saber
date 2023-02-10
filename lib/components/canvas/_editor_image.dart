@@ -23,6 +23,10 @@ class EditorImage {
   Uint8List? invertedThumbnailBytes;
   Size thumbnailSize = Size.zero;
 
+  /// The maximum image size allowed for this image.
+  /// If null, Prefs.maxImageSize will be used instead.
+  Size? maxSize;
+
   bool loaded = false;
 
   bool _isThumbnail = false;
@@ -64,6 +68,7 @@ class EditorImage {
     required this.bytes,
     required this.pageIndex,
     required Size pageSize,
+    this.maxSize,
     required this.onMoveImage,
     required this.onDeleteImage,
     required this.onMiscChange,
@@ -143,9 +148,11 @@ class EditorImage {
         naturalSize = const Size(200, 200);
       }
 
-      await Prefs.maxImageSize.waitUntilLoaded();
-      final Size maxSize = Size.square(Prefs.maxImageSize.value);
-      final Size reducedSize = resize(naturalSize, maxSize);
+      if (maxSize == null) {
+        await Prefs.maxImageSize.waitUntilLoaded();
+        maxSize = Size.square(Prefs.maxImageSize.value);
+      }
+      final Size reducedSize = resize(naturalSize, maxSize!);
       if (naturalSize.width != reducedSize.width && allowCalculations) {
         await Future.delayed(Duration.zero); // wait for next event-loop iteration
 
@@ -223,7 +230,7 @@ class EditorImage {
     decoded = image.copyResize(decoded, width: newSize.width.toInt(), height: newSize.height.toInt());
     decoded = image.bakeOrientation(decoded);
 
-    return image.encodePng(decoded) as Uint8List;
+    return image.encodePng(decoded);
   }
 
   /// Bakes the image orientation into the image data.
