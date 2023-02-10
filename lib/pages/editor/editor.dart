@@ -111,8 +111,8 @@ class _EditorState extends State<Editor> {
       if (kDebugMode) print("Loaded file as read-only");
     }
 
-    for (EditorPage page in coreInfo.pages) {
-      listenToQuillChanges(page.quill);
+    for (int pageIndex = 0; pageIndex < coreInfo.pages.length; pageIndex++) {
+      listenToQuillChanges(coreInfo.pages[pageIndex].quill, pageIndex);
     }
 
     if (coreInfo.isEmpty) {
@@ -165,7 +165,7 @@ class _EditorState extends State<Editor> {
     while (pageIndex >= coreInfo.pages.length - 1) {
       final page = EditorPage();
       coreInfo.pages.add(page);
-      listenToQuillChanges(page.quill);
+      listenToQuillChanges(page.quill, coreInfo.pages.length - 1);
     }
   }
   void removeExcessPages() {
@@ -473,13 +473,14 @@ class _EditorState extends State<Editor> {
     autosaveAfterDelay();
   }
 
-  listenToQuillChanges(QuillStruct quill) {
+  listenToQuillChanges(QuillStruct quill, int pageIndex) {
     quill.changeSubscription?.cancel();
     quill.changeSubscription = quill.controller.changes.listen((event) {
-      onQuillChange();
+      onQuillChange(pageIndex);
     });
   }
-  onQuillChange() {
+  onQuillChange(int pageIndex) {
+    createPage(pageIndex); // create empty last page
     autosaveAfterDelay();
   }
 
