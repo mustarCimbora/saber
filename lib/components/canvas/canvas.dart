@@ -37,8 +37,6 @@ class Canvas extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Size pageSize = coreInfo.pages.isNotEmpty ? coreInfo.pages[pageIndex].size : EditorPage.defaultSize;
-
     return Center(
       child: FittedBox(
         child: Container(
@@ -51,15 +49,15 @@ class Canvas extends StatelessWidget {
           ),
           child: !placeholder ? ClipRect(
             child: SizedBox(
-              width: pageSize.width,
-              height: pageSize.height,
+              width: page.size.width,
+              height: page.size.height,
               child: OnyxSdkPenArea(
                 child: InnerCanvas(
                   key: page.innerCanvasKey,
                   pageIndex: pageIndex,
                   redrawPageListenable: page,
-                  width: pageSize.width,
-                  height: pageSize.height,
+                  width: page.size.width,
+                  height: page.size.height,
                   textEditing: textEditing,
                   coreInfo: coreInfo,
                   currentStroke: currentStroke,
@@ -69,8 +67,8 @@ class Canvas extends StatelessWidget {
               ),
             ),
           ) : SizedBox(
-            width: pageSize.width,
-            height: pageSize.height,
+            width: page.size.width,
+            height: page.size.height,
           ),
         ),
       ),
