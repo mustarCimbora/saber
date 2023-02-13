@@ -7,6 +7,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:nextcloud/nextcloud.dart' show NextcloudProvisioningApiUserDetails_Quota;
 import 'package:saber/components/canvas/_canvas_background_painter.dart';
 import 'package:saber/components/canvas/tools/stroke_properties.dart';
+import 'package:saber/data/flavor_config.dart';
 import 'package:saber/data/nextcloud/nextcloud_client_extension.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -86,6 +87,7 @@ abstract class Prefs {
   static late final PlainPref<Quota?> lastStorageQuota;
 
   static late final PlainPref<bool> shouldCheckForUpdates;
+  static late final PlainPref<int> updatesToIgnore;
 
   static late final PlainPref<String> locale;
 
@@ -141,6 +143,7 @@ abstract class Prefs {
     lastStorageQuota = PlainPref("lastStorageQuota", null);
 
     shouldCheckForUpdates = PlainPref("shouldCheckForUpdates", false);
+    updatesToIgnore = PlainPref("updatesToIgnore", (kDebugMode || FlavorConfig.dirty) ? 0 : 1);
 
     locale = PlainPref("locale", "");
 
@@ -435,7 +438,7 @@ class EncPref<T> extends IPref<T> {
 }
 
 /// An [IPref] that transforms the value of another [IPref].
-/// 
+///
 /// Only instantiate this once during the lifetime of the app
 /// (e.g. in a static field) to avoid extraneous
 /// listeners being added to the underlying [IPref].
