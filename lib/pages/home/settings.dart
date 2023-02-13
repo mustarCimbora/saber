@@ -1,3 +1,4 @@
+import 'package:collapsible/collapsible.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -21,6 +22,12 @@ class SettingsPage extends StatefulWidget {
 
   @override
   State<SettingsPage> createState() => _SettingsPageState();
+
+  static final _shouldAlwaysAlertForUpdates = TransformedPref(
+    Prefs.updatesToIgnore,
+    (int value) => value <= 0,
+    (bool value) => value ? 0 : 1,
+  );
 
   static Future<bool?> showResetDialog({
     required BuildContext context,
