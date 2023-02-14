@@ -118,7 +118,6 @@ class _SettingsPageState extends State<SettingsPage> {
           ),
           SliverSafeArea(sliver: SliverToBoxAdapter(
             child: Column(children: [
-              const NextcloudProfile(),
               const Padding(
                 padding: EdgeInsets.all(8),
                 child: AppInfo(),
