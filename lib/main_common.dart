@@ -20,7 +20,11 @@ void main() async {
   FileManager.init();
 
   await Future.wait([
-    Executor().warmUp(),
+    Executor().warmUp(
+      // ensure there are enough isolates for the first screen
+      // (recently accessed notes)
+      isolatesCount: FileManager.maxRecentlyAccessedFiles,
+    ),
     Prefs.locale.waitUntilLoaded(),
   ]);
 
