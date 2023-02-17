@@ -26,7 +26,7 @@ class DynamicMaterialApp extends StatefulWidget {
   static final ValueNotifier<bool> _isFullscreen = ValueNotifier(false);
   static bool get isFullscreen => _isFullscreen.value;
 
-  static setFullscreen(bool value, {required bool updateSystem}) {
+  static void setFullscreen(bool value, {required bool updateSystem}) {
     _isFullscreen.value = value;
     if (!updateSystem) return;
     value ? web.enterFullScreen() : web.exitFullscreen();

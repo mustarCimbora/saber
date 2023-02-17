@@ -9,16 +9,14 @@ import 'package:saber/data/prefs.dart';
 import 'package:saber/pages/editor/editor.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'file_manager_nonweb.dart'
-  if (dart.library.html) 'file_manager_web.dart';
-
 /// A collection of cross-platform utility functions for working with a virtual file system.
 class FileManager {
   // disable constructor
   FileManager._();
 
-  static const String appRootDirectoryPrefix = "/Saber";
+  static const String appRootDirectoryPrefix = '/Saber';
   static Future<SharedPreferences> get _prefs async => await SharedPreferences.getInstance();
+  @visibleForTesting
   static Future<String> get documentsDirectory async => (await getApplicationDocumentsDirectory()).path + appRootDirectoryPrefix;
 
   static final StreamController<FileOperation> fileWriteStream = StreamController.broadcast(
@@ -85,7 +83,7 @@ class FileManager {
   }
 
   static Future exportFile(String fileName, Uint8List bytes, {bool isImage = false}) async {
-    return await fmExportFile(fileName, bytes, isImage: isImage);
+    // non-web only
   }
 
   /// Moves a file from [fromPath] to [toPath], returning its final path.
@@ -201,7 +199,7 @@ class FileManager {
     return DateTime.fromMillisecondsSinceEpoch(date);
   }
 
-  static Future<String> newFilePath([String parentPath = "/"]) async {
+  static Future<String> newFilePath([String parentPath = '/']) async {
     assert(parentPath.endsWith('/'));
 
     final DateTime now = DateTime.now();
@@ -229,10 +227,10 @@ class FileManager {
     int i = 1;
     while (await doesFileExist(newFilePath + Editor.extension) && newFilePath + Editor.extension != currentPath) {
       i++;
-      newFilePath = "$filePath ($i)";
+      newFilePath = '$filePath ($i)';
     }
 
-    return newFilePath + (hasExtension ? Editor.extension : "");
+    return newFilePath + (hasExtension ? Editor.extension : '');
   }
 
   static Future _renameReferences(String fromPath, String toPath) async {

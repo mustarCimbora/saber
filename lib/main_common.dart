@@ -61,25 +61,25 @@ void setLocale() {
 class App extends StatefulWidget {
   const App({super.key});
 
-  static String initialLocation = pathToFunction(RoutePaths.home)({"subpage": HomePage.recentSubpage});
+  static String initialLocation = pathToFunction(RoutePaths.home)({'subpage': HomePage.recentSubpage});
   static final GoRouter _router = GoRouter(
     initialLocation: initialLocation,
     routes: <GoRoute>[
       GoRoute(
-        path: "/",
+        path: '/',
         redirect: (context, state) => initialLocation,
       ),
       GoRoute(
         path: RoutePaths.home,
         builder: (context, state) => HomePage(
-          subpage: state.params["subpage"] ?? HomePage.recentSubpage,
-          path: state.queryParams["path"],
+          subpage: state.params['subpage'] ?? HomePage.recentSubpage,
+          path: state.queryParams['path'],
         ),
       ),
       GoRoute(
         path: RoutePaths.edit,
         builder: (context, state) => Editor(
-          path: state.queryParams["path"],
+          path: state.queryParams['path'],
         ),
       ),
       GoRoute(

@@ -20,10 +20,10 @@ class HomePage extends StatefulWidget {
   @override
   State<HomePage> createState() => _HomePageState();
 
-  static const String recentSubpage = "recent";
-  static const String browseSubpage = "browse";
-  static const String whiteboardSubpage = "whiteboard";
-  static const String settingsSubpage = "settings";
+  static const String recentSubpage = 'recent';
+  static const String browseSubpage = 'browse';
+  static const String whiteboardSubpage = 'whiteboard';
+  static const String settingsSubpage = 'settings';
   static const List<String> subpages = [recentSubpage, browseSubpage, whiteboardSubpage, settingsSubpage];
 }
 
@@ -40,12 +40,12 @@ class _HomePageState extends State<HomePage> {
     await showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text("Web deprecated"),
-        content: const Text("The web version of Saber is deprecated and will no longer be updated."),
+        title: const Text('Web deprecated'),
+        content: const Text('The web version of Saber is deprecated and will no longer be updated.'),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
-            child: const Text("Dismiss"),
+            child: const Text('Dismiss'),
           ),
         ],
       ),

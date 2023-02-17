@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 abstract class UpdateManager {
-  static final Uri versionUrl = Uri.parse("https://raw.githubusercontent.com/adil192/saber/main/lib/data/version.dart");
+  static final Uri versionUrl = Uri.parse('https://raw.githubusercontent.com/adil192/saber/main/lib/data/version.dart');
   /// The availability of an update.
   static final ValueNotifier<UpdateStatus> status = ValueNotifier(UpdateStatus.upToDate);
 
