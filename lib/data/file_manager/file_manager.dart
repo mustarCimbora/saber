@@ -73,7 +73,7 @@ class FileManager {
       prefs.setInt(_lastModifiedPrefix + filePath, DateTime.now().millisecondsSinceEpoch),
     });
 
-    afterWrite() {
+    void afterWrite() {
       broadcastFileWrite(FileOperationType.write, filePath);
       if (alsoUpload) FileSyncer.addToUploadQueue(filePath);
     }
@@ -106,7 +106,7 @@ class FileManager {
     if (fromPath == toPath) return toPath;
 
     final prefs = await _prefs;
-    await prefs.setString(toPath, await readFile(fromPath) ?? "");
+    await prefs.setString(toPath, await readFile(fromPath) ?? '');
     await prefs.remove(fromPath);
 
     FileSyncer.addToUploadQueue(fromPath);

@@ -59,7 +59,7 @@ class _CanvasGestureDetectorState extends State<CanvasGestureDetector> {
   bool zoomLock = false;
 
   @override
-  initState() {
+  void initState() {
     setInitialTransform();
     super.initState();
   }
@@ -67,7 +67,7 @@ class _CanvasGestureDetectorState extends State<CanvasGestureDetector> {
   /// When the widget is created, we still have an empty coreInfo.
   /// Wait for note to be loaded before setting the initial transform.
   @override
-  didUpdateWidget(CanvasGestureDetector oldWidget) {
+  void didUpdateWidget(CanvasGestureDetector oldWidget) {
     if (oldWidget.initialPageIndex != widget.initialPageIndex
         || oldWidget.filePath != widget.filePath) {
       setInitialTransform();
@@ -100,7 +100,7 @@ class _CanvasGestureDetectorState extends State<CanvasGestureDetector> {
     }
   }
 
-  _listenerPointerEvent(PointerEvent event) {
+  void _listenerPointerEvent(PointerEvent event) {
     double? pressure;
     if (event.kind == PointerDeviceKind.stylus) {
       pressure = event.pressure;

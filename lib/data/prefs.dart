@@ -213,7 +213,7 @@ abstract class IPref<T> extends ValueNotifier<T> {
   Future<void> delete();
 
   @override
-  get value {
+  T get value {
     if (!loaded && !Prefs.testingMode && Prefs.warnIfPrefAccessedBeforeLoaded) {
       if (kDebugMode) print("WARNING: Pref '$key' accessed before it was loaded.");
     }
@@ -282,7 +282,7 @@ class PlainPref<T> extends IPref<T> {
     return null;
   }
   @override
-  _afterLoad() async {
+  Future<void> _afterLoad() async {
     _prefs = null;
   }
 
@@ -412,7 +412,7 @@ class EncPref<T> extends IPref<T> {
     return null;
   }
   @override
-  _afterLoad() async {
+  Future<void> _afterLoad() async {
     _storage = null;
   }
 
@@ -468,16 +468,16 @@ class TransformedPref<T_in, T_out> extends IPref<T_out> {
   final T_in Function(T_out) reverseTransform;
 
   @override
-  get value => transform(pref.value);
+  T_out get value => transform(pref.value);
 
   @override
   set value(T_out value) => pref.value = reverseTransform(value);
 
   @override
-  dynamic get loaded => pref.loaded;
+  bool get loaded => pref.loaded;
 
   @override
-  dynamic get saved => pref.saved;
+  bool get saved => pref.saved;
 
   TransformedPref(this.pref, this.transform, this.reverseTransform)
       : super(pref.key, transform(pref.defaultValue)) {
