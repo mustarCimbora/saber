@@ -233,8 +233,8 @@ class _PagesBuilder extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final List<Widget> children = [
-      const SizedBox(height: 16),
-      const SizedBox(height: 16),
+      const SizedBox.square(dimension: 16),
+      const SizedBox.square(dimension: 16),
     ];
 
     double topOfPage = 16 * 2;
@@ -252,12 +252,12 @@ class _PagesBuilder extends StatelessWidget {
         children.add(pageBuilder(context, pageIndex));
       }
 
-      children.add(const SizedBox(height: 16));
+      children.add(const SizedBox.square(dimension: 16));
 
       topOfPage = bottomOfPage + 16;
     }
 
-    children.add(const SizedBox(height: 16));
+    children.add(const SizedBox.square(dimension: 16));
     return Column(children: children);
   }
 }
