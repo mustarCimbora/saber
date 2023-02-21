@@ -57,6 +57,7 @@ class _CanvasGestureDetectorState extends State<CanvasGestureDetector> {
   final TransformationController _transformationController = TransformationController();
 
   bool zoomLock = false;
+  double? zoomLockedValue;
 
   @override
   void initState() {
@@ -123,9 +124,8 @@ class _CanvasGestureDetectorState extends State<CanvasGestureDetector> {
             child: LayoutBuilder(
               builder: (BuildContext context, BoxConstraints constraints) {
                 return InteractiveCanvasViewer.builder(
-                  minScale: 0.01,
-                  maxScale: 5,
-                  scaleEnabled: !zoomLock,
+                  minScale: zoomLockedValue ?? 0.01,
+                  maxScale: zoomLockedValue ?? 5,
 
                   transformationController: _transformationController,
 
@@ -155,6 +155,9 @@ class _CanvasGestureDetectorState extends State<CanvasGestureDetector> {
             zoomLock: zoomLock,
             onZoomLockChanged: (bool zoomLock) => setState(() {
               this.zoomLock = zoomLock;
+              zoomLockedValue = zoomLock
+                  ? _transformationController.value.getMaxScaleOnAxis()
+                  : null;
             }),
           ),
         ),
