@@ -56,7 +56,8 @@ class CanvasGestureDetector extends StatefulWidget {
 class _CanvasGestureDetectorState extends State<CanvasGestureDetector> {
   final TransformationController _transformationController = TransformationController();
 
-  bool zoomLock = false;
+  /// If zooming is locked, this is the zoom level.
+  /// Otherwise, this is null.
   double? zoomLockedValue;
   /// Whether single-finger panning is locked.
   /// Two-finger panning is always enabled.
@@ -156,9 +157,8 @@ class _CanvasGestureDetectorState extends State<CanvasGestureDetector> {
         Positioned.fill(
           child: CanvasHud(
             transformationController: _transformationController,
-            zoomLock: zoomLock,
+            zoomLock: zoomLockedValue != null,
             setZoomLock: (bool zoomLock) => setState(() {
-              this.zoomLock = zoomLock;
               zoomLockedValue = zoomLock
                   ? _transformationController.value.getMaxScaleOnAxis()
                   : null;
