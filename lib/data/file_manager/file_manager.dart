@@ -6,6 +6,7 @@ import 'package:intl/intl.dart' show DateFormat;
 import 'package:path_provider/path_provider.dart';
 import 'package:saber/data/nextcloud/file_syncer.dart';
 import 'package:saber/data/prefs.dart';
+import 'package:saber/i18n/strings.g.dart';
 import 'package:saber/pages/editor/editor.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -203,7 +204,8 @@ class FileManager {
     assert(parentPath.endsWith('/'));
 
     final DateTime now = DateTime.now();
-    final String filePath = "$parentPath${DateFormat("yy-MM-dd").format(now)} Untitled";
+    final String filePath = '$parentPath${DateFormat("yy-MM-dd").format(now)} '
+        '${t.editor.untitled}';
 
     return await suffixFilePathToMakeItUnique(filePath);
   }
