@@ -61,7 +61,7 @@ void main() {
     expect(findIcon(Icons.apple), findsAtLeastNWidgets(2));
     Prefs.platform.value = TargetPlatform.android;
     await tester.pumpAndSettle();
-    expect(findIcon(Icons.android), findsAtLeastNWidgets(2));
+    expect(findIcon(FontAwesomeIcons.firefoxBrowser), findsAtLeastNWidgets(2));
 
     // Hyperlegible font
     Prefs.hyperlegibleFont.value = false;
