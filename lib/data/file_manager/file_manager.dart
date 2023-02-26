@@ -92,6 +92,10 @@ class FileManager {
   /// If a file already exists at [toPath], [fromPath] will be suffixed with
   /// a number e.g. "file (1)". If [replaceExistingFile] is true, the existing
   /// file will be overwritten instead.
+  ///
+  /// If [replaceExistingFile] is true but the file is a reserved file name,
+  /// the filename will be suffixed with a number instead
+  /// (like if [replaceExistingFile] was false).
   static Future<String> moveFile(String fromPath, String toPath, [bool replaceExistingFile = false]) async {
     fromPath = _sanitisePath(fromPath);
     toPath = _sanitisePath(toPath);
@@ -100,7 +104,7 @@ class FileManager {
       toPath = fromPath.substring(0, fromPath.lastIndexOf('/') + 1) + toPath;
     }
 
-    if (!replaceExistingFile) {
+    if (!replaceExistingFile || Editor.reservedFileNames.contains(toPath)) {
       toPath = await suffixFilePathToMakeItUnique(toPath, fromPath);
     }
 
