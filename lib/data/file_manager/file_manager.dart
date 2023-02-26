@@ -104,7 +104,7 @@ class FileManager {
       toPath = fromPath.substring(0, fromPath.lastIndexOf('/') + 1) + toPath;
     }
 
-    if (!replaceExistingFile || Editor.reservedFileNames.contains(toPath)) {
+    if (!replaceExistingFile || Editor.isReservedPath(toPath)) {
       toPath = await suffixFilePathToMakeItUnique(toPath, fromPath);
     }
 
@@ -151,7 +151,7 @@ class FileManager {
     allChildren = prefs.getKeys()
     //  .where((String file) => file.startsWith('/')) // directory already starts with '/'
         .where((String file) => file.startsWith(directory)) // filter out other directories
-        .where((String file) => !Editor.reservedFileNames.contains(file)) // filter out reserved file names
+        .where((String file) => !Editor.isReservedPath(file)) // filter out reserved file names
         .map((String file) => file.substring(directory.length)) // remove directory prefix
         .map((String file) => file.contains('/') ? file.substring(0, file.indexOf('/')) : file) // remove nested folder names
         .map((String file) => file.endsWith(Editor.extension) ? file.substring(0, file.length - Editor.extension.length) : file) // remove extension
@@ -178,7 +178,7 @@ class FileManager {
             return filePath;
           }
         })
-        .where((String file) => !Editor.reservedFileNames.contains(file)) // filter out reserved file names
+        .where((String file) => !Editor.isReservedPath(file)) // filter out reserved file names
         .toList();
   }
 
