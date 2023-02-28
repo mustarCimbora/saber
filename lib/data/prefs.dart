@@ -79,7 +79,6 @@ abstract class Prefs {
   static late final PlainPref<bool> lastZoomLock, lastPanLock;
 
   static late final PlainPref<bool> hasDraggedSizeIndicatorBefore;
-  static late final PlainPref<bool> hasBeenWarnedAboutSPen;
 
   static late final PlainPref<List<String>> recentFiles;
 
@@ -142,7 +141,6 @@ abstract class Prefs {
     lastPanLock = PlainPref('lastPanLock', false);
 
     hasDraggedSizeIndicatorBefore = PlainPref('hasDraggedSizeIndicatorBefore', false);
-    hasBeenWarnedAboutSPen = PlainPref('hasBeenWarnedAboutSPen', false);
 
     recentFiles = PlainPref('recentFiles', [], historicalKeys: ['recentlyAccessed']);
 
