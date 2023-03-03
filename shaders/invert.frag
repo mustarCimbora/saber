@@ -96,8 +96,6 @@ vec3 hslToRgb(float h, float s, float l) {
 void main() {
     // Get the (uninverted) color of the current pixel.
     vec4 color = texture(uTexture, FlutterFragCoord().xy);
-    fragColor = color;
-    return;
 
     // Convert the color to HSL
     vec3 hsl = rgbToHsl(color.x, color.y, color.z);
@@ -110,5 +108,5 @@ void main() {
 
     // Set the output color to the inverted color
     // (with the same alpha value as the original color).
-    fragColor = vec4(invertedRgb, color.a);
+    fragColor = vec4(invertedRgb, color.w);
 }
