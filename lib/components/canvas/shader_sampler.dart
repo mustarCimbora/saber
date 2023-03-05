@@ -1,4 +1,6 @@
 import 'dart:async';
+import 'dart:io';
+import 'dart:typed_data';
 import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
@@ -48,7 +50,6 @@ class _ShaderSamplerState extends State<ShaderSampler> {
   @override
   void didUpdateWidget(covariant ShaderSampler oldWidget) {
     _controller.allowSnapshotting = widget.shaderEnabled && preparedForSnapshot;
-    _controller.clear();
     super.didUpdateWidget(oldWidget);
   }
 
@@ -83,10 +84,20 @@ class _ShaderSnapshotPainter extends SnapshotPainter {
 
   @override
   void paintSnapshot(PaintingContext context, Offset offset, Size size, ui.Image image, Size sourceSize, double pixelRatio) {
-    final shader = shaderBuilder(image, size);
-    final Paint paint = Paint()
-      ..shader = shader;
-    context.canvas.drawRect(offset & size, paint);
+    saveImage(image);
+    context.canvas.drawImageRect(
+      image,
+      Offset.zero & sourceSize,
+      offset & size,
+      Paint(),
+    );
+  }
+
+  void saveImage(ui.Image image) async {
+    final ByteData? byteData = await image.toByteData(format: ui.ImageByteFormat.png);
+    final Uint8List pngBytes = byteData!.buffer.asUint8List();
+    final file = await File('test.png').create(recursive: true);
+    await file.writeAsBytes(pngBytes);
   }
 
   @override
